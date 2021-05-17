@@ -1,0 +1,32 @@
+#*********************************************************************
+# Copyright (c) Intel Corporation 2020
+# SPDX-License-Identifier: Apache-2.0
+#*********************************************************************/
+
+# This workflow will do a clean install of go dependencies, build the source code and run tests across different versions of go
+
+name: Go CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        go-version: [1.16.x]
+
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.go-version }}
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Test
+      run: go test ./...

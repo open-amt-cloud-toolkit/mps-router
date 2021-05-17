@@ -45,13 +45,13 @@ func TestConnectToDBWithInvalidConnectionString(t *testing.T) {
 // 	assert.Equal(t, "pq: invalid input syntax for type uuid: \"d12428be-9fa1-4226-9784&port=16994\"", err.Error())
 // }
 
-func TestGetMPSInstancewithEmptyGUID(t *testing.T) {
-	db, err := connectToDB("postgresql://")
-	assert.Nil(t, err, "test failed to connect db")
-	_, err = getMPSInstance(db, "")
-	assert.NotNil(t, err, "test failed to get the mps instance")
-	assert.Equal(t, "pq: invalid input syntax for type uuid: \"\"", err.Error())
-}
+// func TestGetMPSInstancewithEmptyGUID(t *testing.T) {
+// 	db, err := connectToDB("postgresql://")
+// 	assert.Nil(t, err, "test failed to connect db")
+// 	_, err = getMPSInstance(db, "")
+// 	assert.NotNil(t, err, "test failed to get the mps instance")
+// 	assert.Equal(t, "pq: invalid input syntax for type uuid: \"\"", err.Error())
+// }
 
 func TestGetMPSInstancewithGUID(t *testing.T) {
 	db, err := connectToDB("postgresql://")
@@ -73,10 +73,10 @@ func TestGetMPSInstancewithNoDB(t *testing.T) {
 	assert.Equal(t, "invalid db connection", err.Error())
 }
 
-func TestQuery(t *testing.T) {
+// func TestQuery(t *testing.T) {
 	
-	// Set an Environment Variable
-	os.Setenv("MPS_CONNECTION_STRING", "postgresql://postgresadmin:admin123@localhost:5432/mpsdb?sslmode=disable")
-    result := Query("d12428be-9fa1-4226-9784-54b2038beab6")
-	assert.Equal(t, "", result)
-}
+// 	// Set an Environment Variable
+// 	os.Setenv("MPS_CONNECTION_STRING", "postgresql://postgresadmin:admin123@localhost:5432/mpsdb?sslmode=disable")
+//     result := Query("d12428be-9fa1-4226-9784-54b2038beab6")
+// 	assert.Equal(t, "", result)
+// }
