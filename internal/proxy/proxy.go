@@ -19,22 +19,32 @@ type Server struct {
 	Addr string
 	// TCP address of target server
 	Target string
-	// ModifyRequest is an optional function that modifies the request from a client to the target server.
-	ModifyRequest func(b *[]byte)
-	// ModifyResponse is an optional function that modifies the response from the target server.
-	ModifyResponse func(b *[]byte)
+
+	serve func(ln net.Listener) error
+}
+
+func NewServer(addr string, target string) Server {
+	if addr == "" {
+		addr = ":8003"
+	}
+	server := Server{
+		Addr:   addr,
+		Target: target,
+	}
+	server.serve = server.serveDefault
+	return server
 }
 
 // ListenAndServe listens on the TCP network address laddr and then handle packets
 // on incoming connections.
-func (s *Server) ListenAndServe() error {
+func (s Server) ListenAndServe() error {
 	listener, err := net.Listen("tcp", s.Addr)
 	if err != nil {
 		return err
 	}
 	return s.serve(listener)
 }
-func (s *Server) serve(ln net.Listener) error {
+func (s Server) serveDefault(ln net.Listener) error {
 	for {
 		conn, err := ln.Accept()
 		if err != nil {
@@ -44,7 +54,7 @@ func (s *Server) serve(ln net.Listener) error {
 		go s.handleConn(conn)
 	}
 }
-func (s *Server) parseGuid(content string) string {
+func (s Server) parseGuid(content string) string {
 	guid := ""
 	log.Println("content :", content)
 	splitString := strings.Split(content, "\n")
@@ -55,13 +65,13 @@ func (s *Server) parseGuid(content string) string {
 	guid = r.FindString(splitString[0])
 	return guid
 }
-func (s *Server) handleConn(conn net.Conn) {
+func (s Server) handleConn(conn net.Conn) {
 	destChannel := make(chan net.Conn)
 	go s.forward(conn, destChannel)
 	dst := <-destChannel
 	go s.backward(conn, dst)
 }
-func (s *Server) forward(conn net.Conn, destChannel chan net.Conn) {
+func (s Server) forward(conn net.Conn, destChannel chan net.Conn) {
 	var dst net.Conn
 	defer conn.Close()
 
@@ -74,17 +84,15 @@ func (s *Server) forward(conn net.Conn, destChannel chan net.Conn) {
 			return
 		}
 		b := buff[:n]
-		destination := "mps"
+		destination := s.Target
 		if isFirst {
 			guid := s.parseGuid(string(b))
-			println("guid :", guid)
 			if guid != "" {
 				//call to database to get the mps instance
 				destination = mpsdb.Query(guid)
 			}
-			println(destination)
 			// connects to target server
-			dst, err = net.Dial("tcp", destination+":3000")
+			dst, err = net.Dial("tcp", destination)
 			if err != nil {
 				log.Println(err.Error())
 				return
@@ -104,7 +112,7 @@ func (s *Server) forward(conn net.Conn, destChannel chan net.Conn) {
 	}
 }
 
-func (s *Server) backward(conn net.Conn, dst net.Conn) {
+func (s Server) backward(conn net.Conn, dst net.Conn) {
 	defer func() {
 		conn.Close()
 		dst.Close()
@@ -117,9 +125,6 @@ func (s *Server) backward(conn net.Conn, dst net.Conn) {
 			return
 		}
 		b := buff[:n]
-		if err != nil {
-			return
-		}
 		_, err = conn.Write(b)
 		if err != nil {
 			log.Println(err)

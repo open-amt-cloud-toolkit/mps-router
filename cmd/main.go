@@ -12,9 +12,8 @@ import (
 
 func main() {
 	flag.Parse()
-	p := proxy.Server{
-		Addr: ":8003",
-	}
-	log.Println("Proxying from " + p.Addr + " to :3000" + p.Target)
+
+	p := proxy.NewServer(":8003", "mps:3000")
+	log.Println("Proxying from " + p.Addr + " to " + p.Target)
 	p.ListenAndServe()
 }
