@@ -65,13 +65,15 @@ func Query(guid string) string {
 	dbSource := getDBConnectionStr()
 	db, err := connectToDB(dbSource)
 	if err != nil {
-		log.Fatal("Failed to open a DB connection: ", err)
+		log.Println("Failed to open a DB connection: ", err)
+		return ""
 	}
 	defer db.Close()
 	mpsInstance := ""
 	mpsInstance, err = getMPSInstance(db, guid)
 	if err != nil {
-		log.Fatal("Failed to open a DB connection: ", err)
+		log.Println("Failed to open a DB connection: ", err)
+		return ""
 	}
 	return mpsInstance
 }
