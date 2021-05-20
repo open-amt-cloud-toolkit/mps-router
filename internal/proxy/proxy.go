@@ -89,7 +89,12 @@ func (s Server) forward(conn net.Conn, destChannel chan net.Conn) {
 			guid := s.parseGuid(string(b))
 			if guid != "" {
 				//call to database to get the mps instance
-				destination = mpsdb.Query(guid)
+				instance := mpsdb.Query(guid)
+				if (instance != "") {
+					parts := strings.Split(destination, ":")
+					parts[0] = instance
+					destination = parts[0] + ":" + parts[1]
+				}
 			}
 			// connects to target server
 			dst, err = net.Dial("tcp", destination)
