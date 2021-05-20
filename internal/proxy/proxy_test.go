@@ -102,14 +102,93 @@ func TestParseGuidRequestWithInvalidGUID_WS(t *testing.T) {
 }
 
 func TestListenAndServe(t *testing.T) {
-	server := Server{Addr: ":8009"}
+	server := Server{Addr: ":8010"}
+	hasBeenServed := false
+	server.serve = func(ln net.Listener) error {
+		hasBeenServed = true
+		return nil
+	}
+	server.ListenAndServe()
+
+	assert.True(t, hasBeenServed)
+}
+func TestForwardNoGUID(t *testing.T) {
+	testServer := NewServer(":8009", ":3000")
+	var server net.Conn = &connTester{}
+	destChannel := make(chan net.Conn)
+	complete := make(chan string)
+	serverReady := make(chan bool)
+
 	go func() {
-		server.ListenAndServe()
-		conn, err := net.Dial("tcp", ":8009")
+		ln, err := net.Listen("tcp", ":3000")
 		if err != nil {
-			log.Println(err)
+			log.Fatal(err.Error())
 		}
-		log.Println("connection :", conn)
-		defer conn.Close()
+		for {
+			serverReady <- true
+			conn, err := ln.Accept()
+			if err != nil {
+				log.Println(err)
+			}
+			buff := make([]byte, 65535)
+			<-destChannel
+			for {
+				n, err := conn.Read(buff)
+				if err != nil {
+					log.Println(err)
+					return
+				}
+				b := buff[:n]
+				defer conn.Close()
+				if string(b) != "" {
+					complete <- string(b)
+				}
+			}
+		}
 	}()
+
+	<-serverReady
+
+	go func() {
+		server.Write([]byte("original request"))
+		testServer.forward(server, destChannel)
+		println("got the connection")
+	}()
+
+	result := <-complete
+	assert.Equal(t, "original request", result)
+
+}
+
+func TestBackwardNoGUID(t *testing.T) {
+	testServer := NewServer(":8009", ":3000")
+
+	var server net.Conn = &connTester{}
+	var destination net.Conn = &connTester{}
+
+	complete := make(chan string)
+	ready := make(chan bool)
+	go func() {
+		destination.Write([]byte("upstream data"))
+		testServer.backward(server, destination)
+		ready <- true
+	}()
+	<-ready
+	go func() {
+		for {
+			buff := make([]byte, 65535)
+			n, err := server.Read(buff)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			b := buff[:n]
+			if string(b) != "" {
+				complete <- string(b)
+			}
+		}
+	}()
+
+	result := <-complete
+	assert.Equal(t, "upstream data", result)
 }
