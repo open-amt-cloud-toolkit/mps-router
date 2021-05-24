@@ -13,7 +13,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /go/bin/app -ldflags="-s -
 FROM scratch
 COPY --from=builder /go/bin/app /app
 ENTRYPOINT ["/app"]
-LABEL Name=mpslookup Version=1.0.0
+LABEL Name=mpsrouter Version=1.0.0
 LABEL license='SPDX-License-Identifier: Apache-2.0' \
       copyright='Copyright (c) 2021: Intel'
 EXPOSE 8003
