@@ -56,12 +56,11 @@ func (s Server) serveDefault(ln net.Listener) error {
 }
 func (s Server) parseGuid(content string) string {
 	guid := ""
-	log.Println("content :", content)
 	splitString := strings.Split(content, "\n")
 	if len(splitString) < 1 {
 		return guid
 	}
-	r := regexp.MustCompile("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-4[a-fA-F0-9]{3}-[8|9|aA|bB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}")
+	r := regexp.MustCompile("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[8|9|aA|bB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}")
 	guid = r.FindString(splitString[0])
 	return guid
 }
@@ -71,6 +70,7 @@ func (s Server) handleConn(conn net.Conn) {
 	dst := <-destChannel
 	go s.backward(conn, dst)
 }
+
 func (s Server) forward(conn net.Conn, destChannel chan net.Conn) {
 	var dst net.Conn
 	defer conn.Close()
@@ -90,7 +90,7 @@ func (s Server) forward(conn net.Conn, destChannel chan net.Conn) {
 			if guid != "" {
 				//call to database to get the mps instance
 				instance := mpsdb.Query(guid)
-				if (instance != "") {
+				if instance != "" {
 					parts := strings.Split(destination, ":")
 					parts[0] = instance
 					destination = parts[0] + ":" + parts[1]

@@ -48,7 +48,7 @@ func TestParseGuidRequestWithNoGUID_HTTP(t *testing.T) {
 	assert.Equal(t, "", result)
 }
 
-func TestParseGuidRequestWithGUID_HTTP(t *testing.T) {
+func TestParseGuidRequestWithGUIDv4_HTTP(t *testing.T) {
 	server := Server{}
 	request := `GET /api/v1/amt/log/audit/63f32fee-238e-4f6a-a091-092270d22439?startIndex=0 HTTP/1.1 
 	User-Agent: PostmanRuntime/7.28.0
@@ -59,6 +59,38 @@ func TestParseGuidRequestWithGUID_HTTP(t *testing.T) {
 	Connection: keep-alive`
 	result := server.parseGuid(request)
 	assert.Equal(t, "63f32fee-238e-4f6a-a091-092270d22439", result)
+}
+func TestParseGuidRequestWithGUIDv1_HTTP(t *testing.T) {
+	server := Server{}
+	request := `GET /api/v1/amt/features/63f32fee-238e-1f6a-a091-092270d22439 HTTP/1.1
+	Host: mpsrouter:8003
+	Connection: keep-alive
+	X-Forwarded-For: 10.0.0.2
+	X-Forwarded-Proto: https
+	X-Forwarded-Host: localhost
+	X-Forwarded-Port: 8443
+	X-Forwarded-Path: /mps/api/v1/amt/features/63f32fee-238e-4f6a-a091-092270d22439
+	X-Forwarded-Prefix: /mps
+	X-Real-IP: 10.0.0.2
+	sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="90", "Microsoft 
+	Edge";v="90"
+	accept: application/json, text/plain, */*
+	authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI5RW1SSlRiSWlJYjRiSWVTc21nY1dJanJSNkh5RVRxYyIsImV4cCI6MTYyMjMxMzgzM30.A1LRc_smYHP0Oxghf31EYZnWQ7kaszlqv_8mlMZL9ns
+	sec-ch-ua-mobile: ?0
+	user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36 
+	Edg/90.0.818.66
+	sec-fetch-site: same-origin
+	sec-fetch-mode: cors
+	sec-fetch-dest: empty
+	referer: https://localhost/devices/dc09fce2-a602-11ea-90a8-90cf9ac8ee00
+	accept-encoding: gzip, deflate, br
+	accept-language: en-US,en;q=0.9
+	cookie: _ga=GA1.1.1282238231.1618252808; _pk_id.1.1fff=fc8749a5a7b04428.1619127233.; pga4_session=add36de3-b001-429e-8d5b-bd052c9483ba!N3lVSJ57PlRcgWxX3QaZFLSGtDU=; PGADMIN_LANGUAGE=en        
+	X-Consumer-ID: 393611c3-aea9-510d-9be4-ac429ecc53f4
+	X-Consumer-Username: admin
+	X-Credential-Identifier: 9EmRJTbIiIb4bIeSsmgcWIjrR6HyETqc`
+	result := server.parseGuid(request)
+	assert.Equal(t, "63f32fee-238e-1f6a-a091-092270d22439", result)
 }
 
 func TestParseGuidRequestWithGUID_WS(t *testing.T) {
