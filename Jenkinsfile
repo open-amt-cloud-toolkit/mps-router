@@ -22,13 +22,13 @@ pipeline{
                 script{
                     staticCodeScan {
                         // generic
-                        scanners             = ['protex', 'snyk']
+                        scanners             = ['checkmarx', 'protex', 'snyk']
                         scannerType          = 'go'
 
                         protexProjectName    = 'OpenAMT - MPS Router'
                         protexBuildName      = 'rrs-generic-protex-build'
 
-                        // checkmarxProjectName = "OpenAMT - MPS Router"
+                        checkmarxProjectName = "OpenAMT - MPS Router"
 
                         //snyk details
                         snykManifestFile        = ['go.mod']
