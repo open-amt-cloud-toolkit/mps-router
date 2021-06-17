@@ -22,7 +22,7 @@ pipeline{
                 script{
                     staticCodeScan {
                         // generic
-                        scanners             = ['protex', 'snyk']
+                        scanners             = ['checkmarx', 'protex', 'snyk']
                         scannerType          = 'go'
 
                         protexProjectName    = 'OpenAMT - MPS Router'
