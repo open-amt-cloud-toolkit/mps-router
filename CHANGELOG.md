@@ -1,5 +1,5 @@
 <a name="v1.4.0"></a>
-## vNext - 2021-06-23
+## v1.4.0 - 2021-06-23
 ### Build
 - **changelog:** add config
 - **docker:** use non root user
