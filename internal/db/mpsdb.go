@@ -61,6 +61,21 @@ func getMPSInstance(db *sql.DB, guid string) (string, error) {
 	return "", errors.New("invalid db connection")
 }
 
+func Health() bool {
+	dbSource := getDBConnectionStr()
+	db, err := connectToDB(dbSource)
+	if err != nil {
+		log.Println("Failed to open a DB connection: ", err)
+		return false
+	}
+	defer db.Close()
+	result := db.QueryRow("SELECT 1")
+	if result.Err() != nil {
+		log.Println(result.Err().Error())
+		return false
+	}
+	return true
+}
 func Query(guid string) string {
 	dbSource := getDBConnectionStr()
 	db, err := connectToDB(dbSource)
