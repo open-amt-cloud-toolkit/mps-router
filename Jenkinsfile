@@ -8,32 +8,37 @@ pipeline{
         timeout(unit: 'HOURS', time: 2)
     }
     stages{
-        stage('Cloning Repository') {
-            steps{ 
+        stage('Scan'){
+            environment {
+                PROJECT_NAME               = 'OpenAMT - MPS-Router'
+                SCANNERS                   = 'checkmarx,snyk'
+
+                // publishArtifacts details
+                PUBLISH_TO_ARTIFACTORY     = true
+
+                SNYK_MANIFEST_FILE         = 'go.mod'
+                SNYK_PROJECT_NAME          = 'openamt-mps-router'
+            }
+            when {
+                anyOf {
+                    branch 'main';
+                }
+            }
+            steps {
                 script{
-                    scmCheckout {
+                    scmCheckout { 
                         clean = true
                     }
                 }
+                rbheStaticCodeScan()
             }
         }
-        stage('Static Code Scan') {
-            steps{
-                script{
-                    staticCodeScan {
-                        // generic
-                        scanners             = ['checkmarx', 'protex', 'snyk']
-                        scannerType          = 'go'
-
-                        protexProjectName    = 'OpenAMT - MPS Router'
-                        protexBuildName      = 'rrs-generic-protex-build'
-
-                        checkmarxProjectName = "OpenAMT - MPS-Router"
-
-                        //snyk details
-                        snykManifestFile        = ['go.mod']
-                        snykProjectName         = ['openamt-mps-router']
-                    }
+    }
+    post{
+        failure {
+             script{
+                slackBuildNotify {
+                    slackFailureChannel = '#open-amt-cloud-toolkit-build'
                 }
             }
         }
