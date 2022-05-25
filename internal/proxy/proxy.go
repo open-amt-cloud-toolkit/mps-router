@@ -57,7 +57,7 @@ func (s Server) serveDefault(ln net.Listener) error {
 func (s Server) parseGuid(content string) string {
 	guid := ""
 	splitString := strings.Split(content, "\n")
-	if len(splitString) < 1 {
+	if len(splitString) < 2 {
 		return guid
 	}
 	r := regexp.MustCompile("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[8|9|aA|bB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}")
