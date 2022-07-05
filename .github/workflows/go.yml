@@ -28,5 +28,15 @@ jobs:
         go-version: ${{ matrix.go-version }}
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Test
-      run: go test ./...
+    - name: Install Test Converter and run tests
+      run: |
+        export GOPATH="$HOME/go/"
+        export PATH=$PATH:$GOPATH/bin
+        go install github.com/jstemmer/go-junit-report/v2@latest
+        go test -v 2>&1 ./... | go-junit-report -set-exit-code > mps-router-unit.xml
+    - name: GitHub Upload Release Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: mps-router-unit
+        path: mps-router-unit.xml
+
