@@ -10,7 +10,7 @@ WORKDIR /go/src/app
 COPY . .
 RUN go mod download
 RUN go mod verify
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /go/bin/app -ldflags="-s -w" -v ./cmd/
+RUN CGO_ENABLED=0 GOOS=linux go build -o /go/bin/app -ldflags="-s -w" -v ./cmd/
 #final stage
 FROM scratch
 COPY --from=builder /go/bin/app /app
