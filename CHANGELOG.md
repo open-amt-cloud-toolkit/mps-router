@@ -1,5 +1,5 @@
-<a name="2.2.0"></a>
-## [2.2.0] - 2022-10-05
+<a name="2.1.1"></a>
+## [2.1.1] - 2022-10-05
 ### Build
 - **deps:** bump github.com/lib/pq from 1.10.6 to 1.10.7 (#7e3f3a3) 
 - **deps:** bump github.com/stretchr/testify from 1.7.1 to 1.8.0 (#bf8cd4f) 
