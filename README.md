@@ -1,3 +1,5 @@
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/open-amt-cloud-toolkit/mps-router/badge)](https://api.securityscorecards.dev/projects/github.com/open-amt-cloud-toolkit/mps-router)
+
 # Management Presence Server Router
 
 
