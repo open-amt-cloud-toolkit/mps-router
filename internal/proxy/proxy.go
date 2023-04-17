@@ -5,12 +5,18 @@
 package proxy
 
 import (
+	"bytes"
+	"io"
 	"log"
 	mpsdb "mps-lookup/internal/db"
 	"net"
 	"regexp"
 	"strings"
+	"sync"
 )
+
+// Regular expression to match GUID format
+var guidRegEx = regexp.MustCompile("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[8|9|aA|bB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}")
 
 // Server is a TCP server that takes an incoming request and sends it to another
 // server, proxying the response back to the client.
@@ -23,6 +29,7 @@ type Server struct {
 	serve func(ln net.Listener) error
 }
 
+// NewServer creates a new proxy server with the given address and target
 func NewServer(addr string, target string) Server {
 	if addr == "" {
 		addr = ":8003"
@@ -44,6 +51,8 @@ func (s Server) ListenAndServe() error {
 	}
 	return s.serve(listener)
 }
+
+// serveDefault is the default serving function that handles incoming connections
 func (s Server) serveDefault(ln net.Listener) error {
 	for {
 		conn, err := ln.Accept()
@@ -54,38 +63,47 @@ func (s Server) serveDefault(ln net.Listener) error {
 		go s.handleConn(conn)
 	}
 }
+
+// parseGuid extracts the GUID from the provided content string (the header)
 func (s Server) parseGuid(content string) string {
 	guid := ""
 	splitString := strings.Split(content, "\n")
 	if len(splitString) < 2 {
 		return guid
 	}
-	r := regexp.MustCompile("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[8|9|aA|bB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}")
-	guid = r.FindString(splitString[0])
+	guid = guidRegEx.FindString(splitString[0])
 	return guid
 }
+
+// handleConn handles an incoming connection by setting up forward and backward proxies
 func (s Server) handleConn(conn net.Conn) {
-	destChannel := make(chan net.Conn)
+	destChannel := make(chan net.Conn, 1)
+	defer close(destChannel)
+
 	go s.forward(conn, destChannel)
 	dst := <-destChannel
 	go s.backward(conn, dst)
 }
 
+// forward proxies data from the source connection to the destination server
 func (s Server) forward(conn net.Conn, destChannel chan net.Conn) {
 	var dst net.Conn
 	defer conn.Close()
 
+	var once sync.Once
 	buff := make([]byte, 65535)
-	isFirst := true
 	for {
 		n, err := conn.Read(buff)
 		if err != nil {
-			log.Println(err)
+			if err != io.EOF {
+				log.Println(err)
+			}
 			return
 		}
 		b := buff[:n]
-		destination := s.Target
-		if isFirst {
+
+		once.Do(func() {
+			destination := s.Target
 			guid := s.parseGuid(string(b))
 			if guid != "" {
 				//call to database to get the mps instance
@@ -103,37 +121,30 @@ func (s Server) forward(conn net.Conn, destChannel chan net.Conn) {
 				return
 			}
 			destChannel <- dst
-			isFirst = false
-		}
-		defer dst.Close()
-		if err != nil {
+		})
+
+		if dst == nil {
 			return
 		}
-		_, err = dst.Write(b)
+		_, err = io.Copy(dst, bytes.NewReader(b))
 		if err != nil {
 			log.Println(err)
+			dst.Close()
 			return
 		}
 	}
 }
 
+// backward proxies data from the destination server back to the source connection
 func (s Server) backward(conn net.Conn, dst net.Conn) {
 	defer func() {
 		conn.Close()
 		dst.Close()
 	}()
-	buff := make([]byte, 65535)
-	for {
-		n, err := dst.Read(buff)
-		if err != nil {
+	_, err := io.Copy(conn, dst)
+	if err != nil {
+		if err != io.EOF {
 			log.Println(err)
-			return
-		}
-		b := buff[:n]
-		_, err = conn.Write(b)
-		if err != nil {
-			log.Println(err)
-			return
 		}
 	}
 }
