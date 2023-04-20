@@ -140,7 +140,7 @@ func TestListenAndServe(t *testing.T) {
 		hasBeenServed = true
 		return nil
 	}
-	server.ListenAndServe()
+	_ = server.ListenAndServe()
 
 	assert.True(t, hasBeenServed)
 }
@@ -182,7 +182,7 @@ func TestForwardNoGUID(t *testing.T) {
 	<-serverReady
 
 	go func() {
-		server.Write([]byte("original request"))
+		_, _ = server.Write([]byte("original request"))
 		testServer.forward(server, destChannel)
 		println("got the connection")
 	}()
@@ -201,7 +201,7 @@ func TestBackwardNoGUID(t *testing.T) {
 	complete := make(chan string)
 	ready := make(chan bool)
 	go func() {
-		destination.Write([]byte("upstream data"))
+		_, _ = destination.Write([]byte("upstream data"))
 		testServer.backward(server, destination)
 		ready <- true
 	}()

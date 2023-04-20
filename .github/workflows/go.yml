@@ -33,7 +33,20 @@ jobs:
         export GOPATH="$HOME/go/"
         export PATH=$PATH:$GOPATH/bin
         go install github.com/jstemmer/go-junit-report/v2@latest
-        go test -v 2>&1 ./... | go-junit-report -set-exit-code > mps-router-unit.xml
+        go test -covermode=atomic -coverprofile=coverage.out -race -v 2>&1 ./... | go-junit-report -set-exit-code > mps-router-unit.xml
+        
+    - name: Format
+      run: if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then exit 1; fi
+    - name: Run go vet
+      run: go vet ./...
+    - name: Run go lint
+      uses: golangci/golangci-lint-action@v3
+      with:
+        version: latest
+    - uses: codecov/codecov-action@v3.1.2
+      name: Upload Coverage Results
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
     - name: GitHub Upload Release Artifacts
       uses: actions/upload-artifact@v2
       with:
