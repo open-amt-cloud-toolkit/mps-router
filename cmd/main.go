@@ -43,5 +43,9 @@ func main() {
 
 	p := proxy.NewServer(":"+routerPort, mpsHost+":"+mpsPort)
 	log.Println("Proxying from " + p.Addr + " to :" + p.Target)
-	p.ListenAndServe()
+	err := p.ListenAndServe()
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
+
 }

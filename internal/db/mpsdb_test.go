@@ -60,6 +60,6 @@ func TestGetMPSInstancewithNoDB(t *testing.T) {
 func TestQuery(t *testing.T) {
 	// Set an Environment Variable
 	os.Setenv("MPS_CONNECTION_STRING", "postgresql://")
-    result := Query("d12428be-9fa1-4226-9784-54b2038beab6")
+	result := Query("d12428be-9fa1-4226-9784-54b2038beab6")
 	assert.Equal(t, "", result)
 }
