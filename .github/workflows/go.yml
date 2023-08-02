@@ -13,8 +13,14 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+
 jobs:
   build:
+    permissions:
+      contents: read  # for actions/checkout to fetch code
+      pull-requests: read  # for golangci/golangci-lint-action to fetch pull requests
     runs-on: ubuntu-latest
 
     strategy:
@@ -22,12 +28,17 @@ jobs:
         go-version: [1.18.x]
 
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@cba0d00b1fc9a034e1e642ea0f1103c282990604 # v2.5.0
+      with:
+        egress-policy: audit
+
     - name: Install Go
-      uses: actions/setup-go@v2
+      uses: actions/setup-go@bfdd3570ce990073878bf10f6b2d79082de49492 # v2.2.0
       with:
         go-version: ${{ matrix.go-version }}
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
     - name: Install Test Converter and run tests
       run: |
         export GOPATH="$HOME/go/"
@@ -40,15 +51,15 @@ jobs:
     - name: Run go vet
       run: go vet ./...
     - name: Run go lint
-      uses: golangci/golangci-lint-action@v3
+      uses: golangci/golangci-lint-action@639cd343e1d3b897ff35927a75193d57cfcba299 # v3.6.0
       with:
         version: latest
-    - uses: codecov/codecov-action@v3.1.2
+    - uses: codecov/codecov-action@40a12dcee2df644d47232dde008099a3e9e4f865 # v3.1.2
       name: Upload Coverage Results
       with:
         token: ${{secrets.CODECOV_TOKEN}}
     - name: GitHub Upload Release Artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@82c141cc518b40d92cc801eee768e7aafc9c2fa2 # v2.3.1
       with:
         name: mps-router-unit
         path: mps-router-unit.xml
