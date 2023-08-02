@@ -1,14 +1,3 @@
-<a name="2.1.2"></a>
-## [2.1.2] - 2023-08-02
-### Build
-- **deps:** bump github.com/stretchr/testify from 1.8.3 to 1.8.4 (#6a3a8cb) 
-- **deps:** bump github.com/stretchr/testify from 1.8.2 to 1.8.3 (#bf93755) 
-- **deps:** bump github.com/lib/pq from 1.10.8 to 1.10.9 (#3c1ac31) 
-
-### Ci
-- updated semantic release version (#1805ae6) 
-- adds codecov, go fmt, go vet, and go lint (#0a3a00e) 
-
 <a name="2.1.1"></a>
 ## [2.1.1] - 2022-10-05
 ### Build
