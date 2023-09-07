@@ -1,7 +1,7 @@
 <a name="2.1.2"></a>
 ## [2.1.2] - 2023-08-02
 ### Build
-- **deps:** bump github.com/stretchr/testify from 1.8.3 to 1.8.4 (#6a3a8cb) 
+- **deps:** bumpp github.com/stretchr/testify from 1.8.3 to 1.8.4 (#6a3a8cb) 
 - **deps:** bump github.com/stretchr/testify from 1.8.2 to 1.8.3 (#bf93755) 
 - **deps:** bump github.com/lib/pq from 1.10.8 to 1.10.9 (#3c1ac31) 
 
