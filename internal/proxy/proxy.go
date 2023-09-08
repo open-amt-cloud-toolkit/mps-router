@@ -16,7 +16,9 @@ import (
 )
 
 // Regular expression to match GUID format
-var guidRegEx = regexp.MustCompile("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[8|9|aA|bB][a-fA-F0-9]{3}-[a-fA-F0-9]{12}")
+// [a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[8|9|aA|bB][a-fA-F0-9]{3}-[a-fA-F0-9]{12} - RFC4122 Search for GUID
+// The following guid checks for any uuid/guid format, not following RFC4122 explicitly
+var guidRegEx = regexp.MustCompile("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}")
 
 // Server is a TCP server that takes an incoming request and sends it to another
 // server, proxying the response back to the client.
@@ -64,7 +66,7 @@ func (s Server) serveDefault(ln net.Listener) error {
 	}
 }
 
-// parseGuid extracts the GUID from the provided content string (the header)
+// parseGuid extracts the GUID from the provided content string (the url)
 func (s Server) parseGuid(content string) string {
 	guid := ""
 	splitString := strings.Split(content, "\n")
