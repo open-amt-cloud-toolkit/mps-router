@@ -57,6 +57,10 @@ func TestGetMPSInstancewithNoDB(t *testing.T) {
 	assert.Equal(t, "invalid db connection", err.Error())
 }
 
+func TestHealth(t *testing.T) {
+	result := Health()
+	assert.Equal(t, false, result)
+}
 func TestQuery(t *testing.T) {
 	// Set an Environment Variable
 	os.Setenv("MPS_CONNECTION_STRING", "postgresql://")
