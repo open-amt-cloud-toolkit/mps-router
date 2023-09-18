@@ -8,11 +8,12 @@ import (
 	"bytes"
 	"io"
 	"log"
-	mpsdb "mps-lookup/internal/db"
 	"net"
 	"regexp"
 	"strings"
 	"sync"
+
+	"github.com/open-amt-cloud-toolkit/mps-router/internal/db"
 )
 
 // Regular expression to match GUID format
@@ -27,18 +28,21 @@ type Server struct {
 	Addr string
 	// TCP address of target server
 	Target string
-
+	// Database manager
+	DB db.Manager
+	// Function for serving incoming connections
 	serve func(ln net.Listener) error
 }
 
 // NewServer creates a new proxy server with the given address and target
-func NewServer(addr string, target string) Server {
+func NewServer(db db.Manager, addr string, target string) Server {
 	if addr == "" {
 		addr = ":8003"
 	}
 	server := Server{
 		Addr:   addr,
 		Target: target,
+		DB:     db,
 	}
 	server.serve = server.serveDefault
 	return server
@@ -109,7 +113,7 @@ func (s Server) forward(conn net.Conn, destChannel chan net.Conn) {
 			guid := s.parseGuid(string(b))
 			if guid != "" {
 				//call to database to get the mps instance
-				instance := mpsdb.Query(guid)
+				instance := s.DB.Query(guid)
 				if instance != "" {
 					parts := strings.Split(destination, ":")
 					parts[0] = instance

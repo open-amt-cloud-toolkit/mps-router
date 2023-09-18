@@ -6,12 +6,42 @@
 package proxy
 
 import (
+	"database/sql"
 	"log"
 	"net"
 	"testing"
 
+	"github.com/open-amt-cloud-toolkit/mps-router/internal/db"
 	"github.com/stretchr/testify/assert"
 )
+
+type MockDBManager struct {
+	ConnectResult     *sql.DB
+	ConnectError      error
+	ConnectionStr     string
+	MPSInstanceResult string
+	MPSInstanceError  error
+	HealthResult      bool
+	QueryResult       string
+}
+
+func (mock *MockDBManager) Connect() (db.Database, error) {
+	return mock.ConnectResult, mock.ConnectError
+}
+func (mock *MockDBManager) GetMPSInstance(db db.Database, guid string) (string, error) {
+	if mock.MPSInstanceError != nil {
+		return "", mock.MPSInstanceError
+	}
+	return mock.MPSInstanceResult, nil
+}
+
+func (mock *MockDBManager) Health() bool {
+	return mock.HealthResult
+}
+
+func (mock *MockDBManager) Query(guid string) string {
+	return mock.QueryResult
+}
 
 func TestServer_parseGuid(t *testing.T) {
 	type args struct {
@@ -145,7 +175,16 @@ func TestListenAndServe(t *testing.T) {
 	assert.True(t, hasBeenServed)
 }
 func TestForwardNoGUID(t *testing.T) {
-	testServer := NewServer(":8009", ":3000")
+	mockDB := &MockDBManager{
+		ConnectResult:     &sql.DB{},
+		ConnectError:      nil,
+		ConnectionStr:     "",
+		MPSInstanceResult: "",
+		MPSInstanceError:  nil,
+		HealthResult:      false,
+		QueryResult:       "",
+	}
+	testServer := NewServer(mockDB, ":8009", ":3000")
 	var server net.Conn = &connTester{}
 	destChannel := make(chan net.Conn)
 	complete := make(chan string)
@@ -193,7 +232,16 @@ func TestForwardNoGUID(t *testing.T) {
 }
 
 func TestBackwardNoGUID(t *testing.T) {
-	testServer := NewServer(":8009", ":3000")
+	mockDB := &MockDBManager{
+		ConnectResult:     &sql.DB{},
+		ConnectError:      nil,
+		ConnectionStr:     "",
+		MPSInstanceResult: "",
+		MPSInstanceError:  nil,
+		HealthResult:      false,
+		QueryResult:       "",
+	}
+	testServer := NewServer(mockDB, ":8009", ":3000")
 
 	var server net.Conn = &connTester{}
 	var destination net.Conn = &connTester{}

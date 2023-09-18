@@ -7,17 +7,37 @@ package main
 import (
 	"flag"
 	"log"
-	mpsdb "mps-lookup/internal/db"
-	"mps-lookup/internal/proxy"
+	"strings"
+
 	"os"
+
+	"github.com/open-amt-cloud-toolkit/mps-router/internal/db"
+	"github.com/open-amt-cloud-toolkit/mps-router/internal/proxy"
 )
 
 func main() {
 
 	result := flag.Bool("health", false, "check health of service")
 	flag.Parse()
+	connectionString := os.Getenv("MPS_CONNECTION_STRING")
+	if connectionString == "" {
+		log.Fatal("MPS_CONNECTION_STRING env is not set,default is mps")
+	}
+	var dbImplementation db.Manager
+	if isMongoConnectionString(connectionString) {
+		// Handle MongoDB-related operations.
+		dbImplementation = &db.MongoManager{
+			ConnectionString: connectionString,
+		}
+	} else {
+		// Handle other database-related operations.
+		dbImplementation = &db.PostgresManager{
+			ConnectionString: connectionString,
+		}
+	}
+
 	if *result {
-		dbHealth := mpsdb.Health()
+		dbHealth := dbImplementation.Health()
 		if dbHealth {
 			os.Exit(0)
 		} else {
@@ -41,11 +61,15 @@ func main() {
 		mpsHost = "mps"
 	}
 
-	p := proxy.NewServer(":"+routerPort, mpsHost+":"+mpsPort)
+	p := proxy.NewServer(dbImplementation, ":"+routerPort, mpsHost+":"+mpsPort)
 	log.Println("Proxying from " + p.Addr + " to :" + p.Target)
 	err := p.ListenAndServe()
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
 
+}
+
+func isMongoConnectionString(connectionString string) bool {
+	return strings.HasPrefix(connectionString, "mongo") || strings.HasPrefix(connectionString, "mongo+srv")
 }
