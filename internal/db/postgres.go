@@ -2,47 +2,37 @@
  * Copyright (c) Intel Corporation 2021
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
-package mpsdb
+package db
 
 import (
 	"database/sql"
 	"errors"
 	"log"
-	"os"
 
 	_ "github.com/lib/pq"
 )
 
-type Device struct {
-	GUID        string
-	MPSinstance sql.NullString
+type PostgresManager struct {
+	ConnectionString string
 }
 
-func getDBConnectionStr() string {
-	connectionString, ok := os.LookupEnv("MPS_CONNECTION_STRING")
-	if !ok {
-		log.Println("MPS_CONNECTION_STRING env is not set")
-		return ""
-	}
-	return connectionString
-}
-
-func connectToDB(dbSource string) (*sql.DB, error) {
-	if dbSource == "" {
-		return nil, errors.New("empty db connection string")
-	}
-	db, err := sql.Open("postgres", dbSource)
+func (pm *PostgresManager) Connect() (Database, error) {
+	db, err := sql.Open("postgres", pm.ConnectionString)
 	if err != nil {
-		log.Fatal("failed to open a db connection: ", err)
+		return nil, err
 	}
 	return db, nil
 }
 
-func getMPSInstance(db *sql.DB, guid string) (string, error) {
+func (pm *PostgresManager) GetMPSInstance(db Database, guid string) (string, error) {
+	client, ok := db.(*sql.DB)
+	if !ok {
+		return "", errors.New("invalid database type for PostgreSQL")
+	}
 	var device Device
 	deviceSql := "SELECT guid, mpsinstance FROM devices WHERE guid = $1;"
-	if db != nil {
-		row := db.QueryRow(deviceSql, guid)
+	if client != nil {
+		row := client.QueryRow(deviceSql, guid)
 		switch err := row.Scan(&device.GUID, &device.MPSinstance); err {
 		case sql.ErrNoRows:
 			log.Println("no rows were returned!")
@@ -61,31 +51,30 @@ func getMPSInstance(db *sql.DB, guid string) (string, error) {
 	return "", errors.New("invalid db connection")
 }
 
-func Health() bool {
-	dbSource := getDBConnectionStr()
-	db, err := connectToDB(dbSource)
+func (pm *PostgresManager) Health() bool {
+	db, err := pm.Connect()
 	if err != nil {
 		log.Println("Failed to open a DB connection: ", err)
 		return false
 	}
-	defer db.Close()
-	result := db.QueryRow("SELECT 1")
+
+	defer db.(*sql.DB).Close()
+	result := db.(*sql.DB).QueryRow("SELECT 1")
 	if result.Err() != nil {
 		log.Println(result.Err().Error())
 		return false
 	}
 	return true
 }
-func Query(guid string) string {
-	dbSource := getDBConnectionStr()
-	db, err := connectToDB(dbSource)
+func (pm *PostgresManager) Query(guid string) string {
+	db, err := pm.Connect()
 	if err != nil {
 		log.Println("Failed to open a DB connection: ", err)
 		return ""
 	}
-	defer db.Close()
+	defer db.(*sql.DB).Close()
 	mpsInstance := ""
-	mpsInstance, err = getMPSInstance(db, guid)
+	mpsInstance, err = pm.GetMPSInstance(db, guid)
 	if err != nil {
 		log.Println("Failed to open a DB connection: ", err)
 		return ""
