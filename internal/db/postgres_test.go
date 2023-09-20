@@ -2,7 +2,7 @@
  * Copyright (c) Intel Corporation 2021
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
-package mpsdb
+package db
 
 import (
 	"database/sql"
@@ -14,34 +14,21 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDBConfigWithNoEnvironmentVariables(t *testing.T) {
-	result := getDBConnectionStr()
-	assert.Equal(t, "", result)
-}
-func TestDBConfigWithEnvironmentVariables(t *testing.T) {
-	// Set an Environment Variable
-	os.Setenv("MPS_CONNECTION_STRING", "postgresql://postgresadmin:admin123@localhost:5432/mpsdb?sslmode=disable")
-
-	expected := "postgresql://postgresadmin:admin123@localhost:5432/mpsdb?sslmode=disable"
-	result := getDBConnectionStr()
-	assert.Equal(t, expected, result)
-}
-func TestConnectToDBWithValidConnectionString(t *testing.T) {
+func TestConnectToDB(t *testing.T) {
 	var db *sql.DB
-	result, err := connectToDB("postgresql://")
+	pm := PostgresManager{}
+	result, err := pm.Connect()
 	assert.Nil(t, err, "test failed to connect db")
 	assert.Equal(t, reflect.TypeOf(result), reflect.TypeOf(db))
 }
-func TestConnectToDBWithInvalidConnectionString(t *testing.T) {
-	_, err := connectToDB("")
-	assert.Equal(t, "empty db connection string", err.Error())
-}
 
 func TestGetMPSInstancewithGUID(t *testing.T) {
-	db, err := connectToDB("postgresql://")
+	pm := PostgresManager{}
+
+	db, err := pm.Connect()
 	assert.Nil(t, err, "test failed to connect db")
 	result := ""
-	result, err = getMPSInstance(db, "d12428be-9fa1-4226-9784-54b2038beab6")
+	result, err = pm.GetMPSInstance(db, "d12428be-9fa1-4226-9784-54b2038beab6")
 	if err != nil {
 		log.Println("test failed to get the mps instance", err)
 	}
@@ -49,8 +36,10 @@ func TestGetMPSInstancewithGUID(t *testing.T) {
 }
 
 func TestGetMPSInstancewithNoDB(t *testing.T) {
+	pm := PostgresManager{}
+
 	var db *sql.DB
-	_, err := getMPSInstance(db, "d12428be-9fa1-4226-9784-54b2038beab6")
+	_, err := pm.GetMPSInstance(db, "d12428be-9fa1-4226-9784-54b2038beab6")
 	if err != nil {
 		log.Println("test failed to get the mps instance", err)
 	}
@@ -58,8 +47,16 @@ func TestGetMPSInstancewithNoDB(t *testing.T) {
 }
 
 func TestQuery(t *testing.T) {
+	pm := PostgresManager{}
+
 	// Set an Environment Variable
 	os.Setenv("MPS_CONNECTION_STRING", "postgresql://")
-	result := Query("d12428be-9fa1-4226-9784-54b2038beab6")
+	result := pm.Query("d12428be-9fa1-4226-9784-54b2038beab6")
 	assert.Equal(t, "", result)
+}
+
+func TestHealth(t *testing.T) {
+	pm := PostgresManager{}
+	result := pm.Health()
+	assert.Equal(t, false, result)
 }

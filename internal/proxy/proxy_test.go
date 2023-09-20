@@ -6,7 +6,10 @@
 package proxy
 
 import (
+	"database/sql"
 	"log"
+	"mps-lookup/internal/test"
+
 	"net"
 	"testing"
 
@@ -145,7 +148,16 @@ func TestListenAndServe(t *testing.T) {
 	assert.True(t, hasBeenServed)
 }
 func TestForwardNoGUID(t *testing.T) {
-	testServer := NewServer(":8009", ":3000")
+	mockDB := &test.MockDBManager{
+		ConnectResult:     &sql.DB{},
+		ConnectError:      nil,
+		ConnectionStr:     "",
+		MPSInstanceResult: "",
+		MPSInstanceError:  nil,
+		HealthResult:      false,
+		QueryResult:       "",
+	}
+	testServer := NewServer(mockDB, ":8009", ":3000")
 	var server net.Conn = &connTester{}
 	destChannel := make(chan net.Conn)
 	complete := make(chan string)
@@ -193,7 +205,16 @@ func TestForwardNoGUID(t *testing.T) {
 }
 
 func TestBackwardNoGUID(t *testing.T) {
-	testServer := NewServer(":8009", ":3000")
+	mockDB := &test.MockDBManager{
+		ConnectResult:     &sql.DB{},
+		ConnectError:      nil,
+		ConnectionStr:     "",
+		MPSInstanceResult: "",
+		MPSInstanceError:  nil,
+		HealthResult:      false,
+		QueryResult:       "",
+	}
+	testServer := NewServer(mockDB, ":8009", ":3000")
 
 	var server net.Conn = &connTester{}
 	var destination net.Conn = &connTester{}
