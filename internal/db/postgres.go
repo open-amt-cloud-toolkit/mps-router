@@ -16,6 +16,11 @@ type PostgresManager struct {
 	ConnectionString string
 }
 
+func NewPostgresManager(connectionString string) *PostgresManager {
+	return &PostgresManager{
+		ConnectionString: connectionString,
+	}
+}
 func (pm *PostgresManager) Connect() (Database, error) {
 	db, err := sql.Open("postgres", pm.ConnectionString)
 	if err != nil {
@@ -38,7 +43,7 @@ func (pm *PostgresManager) GetMPSInstance(db Database, guid string) (string, err
 			log.Println("no rows were returned!")
 		case nil:
 			{
-				return device.MPSinstance.String, nil
+				return device.MPSinstance, nil
 			}
 		default:
 			{
