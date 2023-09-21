@@ -7,10 +7,11 @@ package main
 import (
 	"flag"
 	"log"
-	"mps-lookup/internal/db"
-	"mps-lookup/internal/proxy"
-
 	"os"
+	"strings"
+
+	"github.com/open-amt-cloud-toolkit/mps-router/internal/db"
+	"github.com/open-amt-cloud-toolkit/mps-router/internal/proxy"
 )
 
 func main() {
@@ -21,8 +22,13 @@ func main() {
 	if connectionString == "" {
 		log.Fatal("MPS_CONNECTION_STRING env is not set,default is mps")
 	}
-	dbImplementation := &db.PostgresManager{
-		ConnectionString: connectionString,
+	var dbImplementation db.Manager
+	if isMongoConnectionString(connectionString) {
+		// Handle MongoDB-related operations.
+		dbImplementation = db.NewMongoManager(connectionString)
+	} else {
+		// Handle sql database-related operations.
+		dbImplementation = db.NewPostgresManager(connectionString)
 	}
 
 	if *result {
@@ -57,4 +63,8 @@ func main() {
 		log.Fatal("ListenAndServe: ", err)
 	}
 
+}
+
+func isMongoConnectionString(connectionString string) bool {
+	return strings.HasPrefix(connectionString, "mongo") || strings.HasPrefix(connectionString, "mongo+srv")
 }

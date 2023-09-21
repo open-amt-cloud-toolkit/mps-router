@@ -8,11 +8,10 @@ package proxy
 import (
 	"database/sql"
 	"log"
-	"mps-lookup/internal/test"
-
 	"net"
 	"testing"
 
+	"github.com/open-amt-cloud-toolkit/mps-router/internal/test"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -148,7 +147,7 @@ func TestListenAndServe(t *testing.T) {
 	assert.True(t, hasBeenServed)
 }
 func TestForwardNoGUID(t *testing.T) {
-	mockDB := &test.MockDBManager{
+	mockDB := &test.MockSQLDBManager{
 		ConnectResult:     &sql.DB{},
 		ConnectError:      nil,
 		ConnectionStr:     "",
@@ -205,7 +204,7 @@ func TestForwardNoGUID(t *testing.T) {
 }
 
 func TestBackwardNoGUID(t *testing.T) {
-	mockDB := &test.MockDBManager{
+	mockDB := &test.MockSQLDBManager{
 		ConnectResult:     &sql.DB{},
 		ConnectError:      nil,
 		ConnectionStr:     "",
