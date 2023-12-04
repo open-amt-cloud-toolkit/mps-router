@@ -25,4 +25,4 @@ jobs:
         with:
           name: CHANGELOG.md
           path: |
-            ./CHANGELOG.md
+            ./CHANGELOG-new.md
