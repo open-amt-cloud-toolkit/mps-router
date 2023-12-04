@@ -1,3 +1,55 @@
+<a name="v2.3.1"></a>
+## [v2.3.1] - 2023-12-04
+### Build
+- **deps:** bump golang from `110b07a` to `70afe55` (#89c2cd4) 
+- **deps:** bump actions/dependency-review-action from 3.1.3 to 3.1.4 (#116fd5b) 
+- **deps:** bump github/codeql-action from 2.22.7 to 2.22.8 (#b0ba160) 
+- **deps:** bump step-security/harden-runner from 2.6.0 to 2.6.1 (#e374019) 
+- **deps:** bump github/codeql-action from 2.22.6 to 2.22.7 (#6895d39) 
+- **deps:** bump actions/dependency-review-action from 3.1.2 to 3.1.3 (#2675357) 
+- **deps:** bump github/codeql-action from 2.22.5 to 2.22.6 (#05296b1) 
+- **deps:** bump aquasecurity/trivy-action from 0.13.1 to 0.14.0 (#393e491) 
+- **deps:** bump go.mongodb.org/mongo-driver from 1.12.1 to 1.13.0 (#3d45cf0) 
+- **deps:** bump actions/dependency-review-action from 3.1.1 to 3.1.2 (#51c2018) 
+- **deps:** bump golang from `96a8a70` to `110b07a` (#ed3f0bc) 
+- **deps:** bump wagoid/commitlint-github-action from 5.4.3 to 5.4.4 (#a772246) 
+- **deps:** bump actions/dependency-review-action from 3.1.0 to 3.1.1 (#9247418) 
+- **deps:** bump golang from `926f7f7` to `96a8a70` (#74660ae) 
+- **deps:** bump aquasecurity/trivy-action from 0.13.0 to 0.13.1 (#63900ce) 
+- **deps:** bump github/codeql-action from 2.22.4 to 2.22.5 (#a8da474) 
+- **deps:** bump aquasecurity/trivy-action from 0.12.0 to 0.13.0 (#8385eef) 
+- **deps:** bump ossf/scorecard-action from 2.3.0 to 2.3.1 (#c6a2830) 
+- **deps:** bump github/codeql-action from 2.22.3 to 2.22.4 (#88596d9) 
+- **deps:** bump actions/checkout from 4.1.0 to 4.1.1 (#43b1674) 
+- **deps:** bump github/codeql-action from 2.22.2 to 2.22.3 (#35b9a21) 
+- **deps:** bump github/codeql-action from 2.22.1 to 2.22.2 (#f4e8ed5) 
+- **deps:** bump golang from `a76f153` to `926f7f7` (#a541ffd) 
+- **deps:** bump github/codeql-action from 2.22.0 to 2.22.1 (#fde5af2) 
+- **deps:** bump ossf/scorecard-action from 2.2.0 to 2.3.0 (#882f4fc) 
+- **deps:** bump github/codeql-action from 2.21.9 to 2.22.0 (#f870824) 
+- **deps:** bump golang from `1c9cc94` to `a76f153` (#57d48c4) 
+- **deps:** bump golang from `4bc6541` to `1c9cc94` (#1e9f2ec) 
+- **deps:** bump step-security/harden-runner from 2.5.1 to 2.6.0 (#e71babe) 
+- **deps:** bump golang from `ec31b7f` to `4bc6541` (#929c948) 
+- **deps:** bump github/codeql-action from 2.21.8 to 2.21.9 (#1be6f50) 
+- **deps:** bump golang from `96634e5` to `ec31b7f` (#8a1a30b) 
+- **deps:** bump actions/checkout from 4.0.0 to 4.1.0 (#e31da3b) 
+- **deps:** bump docker/login-action from 2.2.0 to 3.0.0 (#3614f41) 
+- **deps:** bump github/codeql-action from 2.21.7 to 2.21.8 (#041537f) 
+
+### Ci
+- fix wrong changelog upload (#8206f5e) 
+- fixes releaserc formatting and adds persist-credentials: false (#f38669e) 
+- release action updates version and changelog (#15ecc43) 
+- fix image name for internal docker release (#ee28b1c) 
+- add release tag to docker image (#db37184) 
+
+### Feat
+- add nosql support via mongo driver (#7155eec) 
+
+### Refactor
+- add db interface (#eddd5ad) 
+
 <a name="2.1.2"></a>
 ## [2.1.2] - 2023-08-02
 ### Build
