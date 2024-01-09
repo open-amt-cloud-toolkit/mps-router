@@ -1,3 +1,23 @@
+<a name="v2.3.2"></a>
+## [v2.3.2] - 2024-01-09
+### Build
+- **deps:** bump actions/upload-artifact from 3.1.3 to 4.0.0 (#09c5907) 
+- **deps:** bump github/codeql-action from 2.22.10 to 3.22.11 (#7c4546e) 
+- **deps:** bump github/codeql-action from 2.22.9 to 2.22.10 (#d735ed3) 
+- **deps:** bump aquasecurity/trivy-action from 0.15.0 to 0.16.0 (#e186044) 
+- **deps:** bump golang from `5c1cabd` to `feceecc` (#cd1251e) 
+- **deps:** bump github/codeql-action from 2.22.8 to 2.22.9 (#f48d5af) 
+- **deps:** bump actions/setup-go from 4.1.0 to 5.0.0 (#9ca7b66) 
+- **deps:** bump go.mongodb.org/mongo-driver from 1.13.0 to 1.13.1 (#ee7f3c9) 
+- **deps:** bump golang from `70afe55` to `5c1cabd` (#35f4a80) 
+- **deps:** bump aquasecurity/trivy-action from 0.14.0 to 0.15.0 (#d0926b9) 
+
+### Chore
+- update build tasks and changelog (#380d241) 
+
+### Ci
+- add trivy results to github security tab (#bb967ce) 
+
 <a name="v2.3.1"></a>
 ## [v2.3.1] - 2023-12-04
 ### Build
