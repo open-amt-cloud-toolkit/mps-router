@@ -1,3 +1,36 @@
+<a name="v2.3.3"></a>
+## [v2.3.3] - 2024-02-08
+### Build
+- disable Jenkins build (#738cef0) 
+- **deps:** bump golang from `a6a7f1f` to `902c740` (#aa92e99) 
+- **deps:** bump actions/upload-artifact from 4.3.0 to 4.3.1 (#1c81b23) 
+- **deps:** bump aquasecurity/trivy-action from 0.16.1 to 0.17.0 (#b9acc23) 
+- **deps:** bump codecov/codecov-action from 4.0.0 to 4.0.1 (#5781681) 
+- **deps:** bump codecov/codecov-action from 3.1.5 to 4.0.0 (#3df800c) 
+- **deps:** bump step-security/harden-runner from 2.6.1 to 2.7.0 (#0774e4f) 
+- **deps:** bump github/codeql-action from 3.23.1 to 3.23.2 (#77f4b3f) 
+- **deps:** bump golang from `51a7800` to `a6a7f1f` (#a2347d8) 
+- **deps:** bump codecov/codecov-action from 3.1.4 to 3.1.5 (#3119e8f) 
+- **deps:** bump actions/upload-artifact from 4.2.0 to 4.3.0 (#cb5543a) 
+- **deps:** bump golang from `fd78f2f` to `51a7800` (#817fcd9) 
+- **deps:** bump github/codeql-action from 3.23.2 to 3.24.0 (#39dbb63) 
+- **deps:** bump actions/dependency-review-action from 3.1.5 to 4.0.0 (#2be14d1) 
+- **deps:** bump actions/upload-artifact from 4.1.0 to 4.2.0 (#a042241) 
+- **deps:** bump github/codeql-action from 3.23.0 to 3.23.1 (#b5f091d) 
+- **deps:** bump aquasecurity/trivy-action from 0.16.0 to 0.16.1 (#86c574e) 
+- **deps:** bump actions/dependency-review-action from 3.1.4 to 3.1.5 (#6af1519) 
+- **deps:** bump github/codeql-action from 3.22.11 to 3.23.0 (#654fd94) 
+- **deps:** bump wagoid/commitlint-github-action from 5.4.4 to 5.4.5 (#c1304ed) 
+- **deps:** bump actions/upload-artifact from 4.0.0 to 4.1.0 (#b7a67f4) 
+- **deps:** bump golang from `101168f` to `fd78f2f` (#628bb9e) 
+- **deps:** bump golang from `feceecc` to `101168f` (#7892596) 
+
+### Chore
+- update build tasks and changelog (#20efb66) 
+
+### Ci
+- pin version of config [@commitlint](https://github.com/commitlint)/config-conventional to 18.5 (#7865ee3) 
+
 <a name="v2.3.2"></a>
 ## [v2.3.2] - 2024-01-09
 ### Build
@@ -16,7 +49,7 @@
 - update build tasks and changelog (#380d241) 
 
 ### Ci
-- add trivy results to github security tab (#bb967ce) 
+- add trivy results to github security tab (#bb967ce)
 
 <a name="v2.3.1"></a>
 ## [v2.3.1] - 2023-12-04
