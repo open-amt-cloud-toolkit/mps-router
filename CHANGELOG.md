@@ -1,3 +1,26 @@
+<a name="v2.3.4"></a>
+## [v2.3.4] - 2024-03-08
+### Build
+- **deps:** bump golang from `8e96e6c` to `fc5e584` (#2343186) 
+- **deps:** bump github.com/stretchr/testify from 1.8.4 to 1.9.0 (#2ceed2c) 
+- **deps:** bump github/codeql-action from 3.24.5 to 3.24.6 (#5c19b9a) 
+- **deps:** bump aquasecurity/trivy-action from 0.17.0 to 0.18.0 (#5bc0f31) 
+- **deps:** bump actions/add-to-project from 0.5.0 to 0.6.0 (#fab5a44) 
+- **deps:** bump codecov/codecov-action from 4.0.2 to 4.1.0 (#d860e4c) 
+- **deps:** bump codecov/codecov-action from 4.0.1 to 4.0.2 (#f610dc8) 
+- **deps:** bump github/codeql-action from 3.24.3 to 3.24.5 (#6c38d37) 
+- **deps:** bump actions/dependency-review-action from 4.1.1 to 4.1.3 (#1e09a17) 
+- **deps:** bump actions/dependency-review-action from 4.1.0 to 4.1.1 (#5cdfd06) 
+- **deps:** bump github/codeql-action from 3.24.1 to 3.24.3 (#0d9b8a1) 
+- **deps:** bump go.mongodb.org/mongo-driver from 1.13.1 to 1.14.0 (#343e310) 
+- **deps:** bump github/codeql-action from 3.24.0 to 3.24.1 (#3a6640e) 
+- **deps:** bump actions/dependency-review-action from 4.0.0 to 4.1.0 (#f24b74f) 
+- **deps:** bump golang from `902c740` to `8e96e6c` (#d5ec17b) 
+- **deps:** bump golangci/golangci-lint-action from 3.7.0 to 3.7.1 (#a1396ef) 
+
+### Chore
+- update build tasks and changelog (#cbbc98a) 
+
 <a name="v2.3.3"></a>
 ## [v2.3.3] - 2024-02-08
 ### Build
@@ -26,7 +49,7 @@
 - **deps:** bump golang from `feceecc` to `101168f` (#7892596) 
 
 ### Chore
-- update build tasks and changelog (#20efb66) 
+- update build tasks and changelog (#20efb66)
 
 ### Ci
 - pin version of config [@commitlint](https://github.com/commitlint)/config-conventional to 18.5 (#7865ee3) 
