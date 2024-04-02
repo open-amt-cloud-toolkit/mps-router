@@ -1,3 +1,33 @@
+<a name="v2.3.5"></a>
+## [v2.3.5] - 2024-04-02
+### Build
+- changed file extension (#a0e7a76) 
+- **deps:** bump actions/dependency-review-action from 4.1.3 to 4.2.3 (#40af7ea) 
+- **deps:** bump aquasecurity/trivy-action from 0.18.0 to 0.19.0 (#1e9b688) 
+- **deps:** bump codecov/codecov-action from 4.1.0 to 4.1.1 (#7943751) 
+- **deps:** bump actions/add-to-project from 0.6.1 to 1.0.0 (#360b787) 
+- **deps:** bump actions/dependency-review-action from 4.2.4 to 4.2.5 (#787e015) 
+- **deps:** bump actions/dependency-review-action from 4.2.3 to 4.2.4 (#50ec9bc) 
+- **deps:** bump github/codeql-action from 3.24.8 to 3.24.9 (#bdc388c) 
+- **deps:** bump wagoid/commitlint-github-action from 5.4.5 to 6.0.0 (#886e492) 
+- **deps:** bump cycjimmy/semantic-release-action from 4.0.0 to 4.1.0 (#4756f8e) 
+- **deps:** bump actions/add-to-project from 0.6.0 to 0.6.1 (#8b1a6fc) 
+- **deps:** bump github/codeql-action from 3.24.7 to 3.24.8 ([#206](https://github.com/open-amt-cloud-toolkit/mps/issues/206)) (#cca4256) 
+- **deps:** bump golang from `fc5e584` to `0466223` ([#205](https://github.com/open-amt-cloud-toolkit/mps/issues/205)) (#50381ed) 
+- **deps:** bump docker/login-action from 3.0.0 to 3.1.0 (#63f5eb9) 
+- **deps:** bump actions/checkout from 4.1.1 to 4.1.2 (#5cbb035) 
+- **deps:** bump github/codeql-action from 3.24.6 to 3.24.7 (#5c1b0f5) 
+
+### Chore
+- update build tasks (#a9c6284) 
+
+### Ci
+- address permissions for trivy-scan to upload (#148841e) 
+
+### Docs
+- update badge links (#38a5d65) 
+- update badge styles (#b33ec59)
+
 <a name="v2.3.4"></a>
 ## [v2.3.4] - 2024-03-08
 ### Build
@@ -16,7 +46,7 @@
 - **deps:** bump github/codeql-action from 3.24.0 to 3.24.1 (#3a6640e) 
 - **deps:** bump actions/dependency-review-action from 4.0.0 to 4.1.0 (#f24b74f) 
 - **deps:** bump golang from `902c740` to `8e96e6c` (#d5ec17b) 
-- **deps:** bump golangci/golangci-lint-action from 3.7.0 to 3.7.1 (#a1396ef) 
+- **deps:** bump golangci/golangci-lint-action from 3.7.0 to 3.7.1 (#a1396ef) .
 
 ### Chore
 - update build tasks and changelog (#cbbc98a) 
