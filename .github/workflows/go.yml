@@ -54,7 +54,7 @@ jobs:
       uses: golangci/golangci-lint-action@3cfe3a4abbb849e10058ce4af15d205b6da42804 # v3.7.1
       with:
         version: latest
-    - uses: codecov/codecov-action@7afa10ed9b269c561c2336fd862446844e0cbf71 # v4.2.0
+    - uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed # v4.3.0
       name: Upload Coverage Results
       with:
         token: ${{secrets.CODECOV_TOKEN}}
