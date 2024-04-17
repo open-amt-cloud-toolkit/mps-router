@@ -24,6 +24,7 @@
                 "prepareCmd": "docker build -t vprodemo.azurecr.io/mpsrouter:v${nextRelease.version} .",
                 "publishCmd": "docker push vprodemo.azurecr.io/mpsrouter:v${nextRelease.version}"
             }
-        ]
+        ],
+        "@semantic-release/git"
     ]
 }
