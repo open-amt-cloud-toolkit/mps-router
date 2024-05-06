@@ -51,7 +51,7 @@ jobs:
     - name: Run go vet
       run: go vet ./...
     - name: Run go lint
-      uses: golangci/golangci-lint-action@9d1e0624a798bb64f6c3cea93db47765312263dc # v3.7.1
+      uses: golangci/golangci-lint-action@38e1018663fa5173f3968ea0777460d3de38f256 # v3.7.1
       with:
         version: latest
     - uses: codecov/codecov-action@5ecb98a3c6b747ed38dc09f787459979aebb39be # v4.3.1
