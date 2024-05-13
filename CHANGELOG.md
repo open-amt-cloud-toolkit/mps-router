@@ -19,7 +19,7 @@
 - **deps:** bump github/codeql-action from 3.24.6 to 3.24.7 (#5c1b0f5) 
 
 ### Chore
-- update build tasks (#a9c6284) 
+- update build tasks (#a9c6284).
 
 ### Ci
 - address permissions for trivy-scan to upload (#148841e) 
