@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #*********************************************************************/
 #build stage
-FROM golang:alpine@sha256:2a882244fb51835ebbd8313bffee83775b0c076aaf56b497b43d8a4c72db65e1 AS builder
+FROM golang:alpine@sha256:282ddcdde8fea3bceb235a539d7a2fee2f52559c5319c42e577df4bcae2c2f39 AS builder
 RUN apk add --no-cache git ca-certificates && update-ca-certificates
 RUN adduser --disabled-password --gecos "" --home "/nonexistent" --shell "/sbin/nologin" --no-create-home --uid "1000" "scratchuser"
 WORKDIR /go/src/app
