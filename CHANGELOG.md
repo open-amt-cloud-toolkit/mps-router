@@ -1,3 +1,5 @@
+## [2.3.8](https://github.com/open-amt-cloud-toolkit/mps-router/compare/v2.3.7...v2.3.8) (2024-07-11)
+
 ## [2.3.7](https://github.com/open-amt-cloud-toolkit/mps-router/compare/v2.3.6...v2.3.7) (2024-06-06)
 
 ## [2.3.6](https://github.com/open-amt-cloud-toolkit/mps-router/compare/v2.3.5...v2.3.6) (2024-05-13)
