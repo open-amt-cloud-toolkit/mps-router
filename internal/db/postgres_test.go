@@ -22,6 +22,14 @@ func TestConnectToDB(t *testing.T) {
 	assert.Equal(t, reflect.TypeOf(result), reflect.TypeOf(db))
 }
 
+func TestConnectionPoolConfiguration(t *testing.T) {
+	pm := PostgresManager{}
+	os.Setenv("MPS_DB_MAX_OPEN_CONNS", "7")
+	_, err := pm.Connect()
+	assert.Nil(t, err, "test failed to connect db")
+	assert.Equal(t, 7, pm.connection.Stats().MaxOpenConnections, "connection pool max open conns not configured")
+}
+
 func TestGetMPSInstancewithGUID(t *testing.T) {
 	pm := PostgresManager{}
 

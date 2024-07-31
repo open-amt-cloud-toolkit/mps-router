@@ -8,12 +8,15 @@ import (
 	"database/sql"
 	"errors"
 	"log"
+	"os"
+	"strconv"
 
 	_ "github.com/lib/pq"
 )
 
 type PostgresManager struct {
 	ConnectionString string
+	connection       *sql.DB
 }
 
 func NewPostgresManager(connectionString string) *PostgresManager {
@@ -22,10 +25,29 @@ func NewPostgresManager(connectionString string) *PostgresManager {
 	}
 }
 func (pm *PostgresManager) Connect() (Database, error) {
+	if pm.connection != nil {
+		return pm.connection, nil
+	}
+
+	log.Println("Creating database connection pool")
 	db, err := sql.Open("postgres", pm.ConnectionString)
+
 	if err != nil {
 		return nil, err
 	}
+
+	if maxOpenConnsStr, ok := os.LookupEnv("MPS_DB_MAX_OPEN_CONNS"); ok {
+		maxOpenConns, err := strconv.Atoi(maxOpenConnsStr)
+
+		if err != nil {
+			return nil, err
+		}
+
+		db.SetMaxOpenConns(maxOpenConns)
+	}
+
+	pm.connection = db
+
 	return db, nil
 }
 
@@ -63,7 +85,6 @@ func (pm *PostgresManager) Health() bool {
 		return false
 	}
 
-	defer db.(*sql.DB).Close()
 	result := db.(*sql.DB).QueryRow("SELECT 1")
 	if result.Err() != nil {
 		log.Println(result.Err().Error())
@@ -77,7 +98,6 @@ func (pm *PostgresManager) Query(guid string) string {
 		log.Println("Failed to open a DB connection: ", err)
 		return ""
 	}
-	defer db.(*sql.DB).Close()
 	mpsInstance := ""
 	mpsInstance, err = pm.GetMPSInstance(db, guid)
 	if err != nil {
