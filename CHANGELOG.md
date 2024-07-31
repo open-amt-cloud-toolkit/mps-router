@@ -1,3 +1,10 @@
+## [2.3.9](https://github.com/open-amt-cloud-toolkit/mps-router/compare/v2.3.8...v2.3.9) (2024-07-31)
+
+
+### Bug Fixes
+
+* **postgres:** ensure that the connection pool is reused across queries ([bf82988](https://github.com/open-amt-cloud-toolkit/mps-router/commit/bf8298815a651782ce828cc67b310842aab5fab6))
+
 ## [2.3.8](https://github.com/open-amt-cloud-toolkit/mps-router/compare/v2.3.7...v2.3.8) (2024-07-11)
 
 ## [2.3.7](https://github.com/open-amt-cloud-toolkit/mps-router/compare/v2.3.6...v2.3.7) (2024-06-06)
