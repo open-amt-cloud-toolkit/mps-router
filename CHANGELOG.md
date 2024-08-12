@@ -9,7 +9,7 @@
 
 ## [2.3.7](https://github.com/open-amt-cloud-toolkit/mps-router/compare/v2.3.6...v2.3.7) (2024-06-06)
 
-## [2.3.6](https://github.com/open-amt-cloud-toolkit/mps-router/compare/v2.3.5...v2.3.6) (2024-05-13)
+## [2.3.6](https://github.com/open-amt-cloud-toolkit/mps-router/compare/v2.3.5...v2.3.6) (2024-05-13).
 
 <a name="v2.3.5"></a>
 ## [v2.3.5] - 2024-04-02
