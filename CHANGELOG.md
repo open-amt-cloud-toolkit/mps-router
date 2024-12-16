@@ -1,3 +1,10 @@
+## [2.3.13](https://github.com/open-amt-cloud-toolkit/mps-router/compare/v2.3.12...v2.3.13) (2024-12-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependencies for direct and transitive ([f5fb48a](https://github.com/open-amt-cloud-toolkit/mps-router/commit/f5fb48a1cac6e8d8eed985d90386a2cd645b0e4e))
+
 ## [2.3.12](https://github.com/open-amt-cloud-toolkit/mps-router/compare/v2.3.11...v2.3.12) (2024-11-14)
 
 ## [2.3.11](https://github.com/open-amt-cloud-toolkit/mps-router/compare/v2.3.10...v2.3.11) (2024-11-08)
